@@ -1,0 +1,89 @@
+***************************************************************
+* RASPIBLITZ DEBUG LOGS
+***************************************************************
+blitzversion: 1.3
+chainnetwork: bitcoin / main
+ 18:57:13 up 4 min,  2 users,  load average: 0.08, 0.26, 0.13
+
+*** BLOCKCHAIN SYSTEMD STATUS ***
+● bitcoind.service - Bitcoin daemon
+   Loaded: loaded (/etc/systemd/system/bitcoind.service; enabled; vendor preset: enabled)
+   Active: activating (auto-restart) (Result: signal) since Thu 2020-01-23 18:56:44 GMT; 28s ago
+  Process: 4262 ExecStartPre=/home/admin/config.scripts/blitz.systemd.sh log blockchain STARTED (code=exited, status=0/SUCCESS)
+  Process: 4264 ExecStart=/usr/local/bin/bitcoind -daemon -conf=/home/bitcoin/.bitcoin/bitcoin.conf -pid=/home/bitcoin/.bitcoin/bitcoind.pid (code=killed, signal=ABRT)
+
+*** LAST BLOCKCHAIN ERROR LOGS ***
+sudo journalctl -u bitcoind -b --no-pager -n8
+-- Logs begin at Thu 2019-02-14 10:11:59 GMT, end at Thu 2020-01-23 18:57:13 GMT. --
+Jan 23 18:56:44 btczh bitcoind[4264]: ************************
+Jan 23 18:56:44 btczh bitcoind[4264]: EXCEPTION: N5boost10filesystem16filesystem_errorE
+Jan 23 18:56:44 btczh bitcoind[4264]: boost::filesystem::create_directory: File exists: "/home/bitcoin/.bitcoin"
+Jan 23 18:56:44 btczh bitcoind[4264]: bitcoin in AppInit()
+Jan 23 18:56:44 btczh bitcoind[4264]: bitcoind: chainparamsbase.cpp:30: const CBaseChainParams& BaseParams(): Assertion `globalChainBaseParams' failed.
+Jan 23 18:56:44 btczh systemd[1]: bitcoind.service: Control process exited, code=killed, status=6/ABRT
+Jan 23 18:56:44 btczh systemd[1]: bitcoind.service: Failed with result 'signal'.
+Jan 23 18:56:44 btczh systemd[1]: Failed to start Bitcoin daemon.
+1579805815 ERROR: Error found in Logs
+
+*** LAST BLOCKCHAIN 20 INFO LOGS ***
+sudo tail -n 20 /mnt/hdd/bitcoin/debug.log
+tail: cannot open '/mnt/hdd/bitcoin/debug.log' for reading: No such file or directory
+
+*** LND SYSTEMD STATUS ***
+● lnd.service - LND Lightning Daemon
+   Loaded: loaded (/etc/systemd/system/lnd.service; enabled; vendor preset: enabled)
+   Active: activating (auto-restart) (Result: exit-code) since Thu 2020-01-23 18:56:14 GMT; 59s ago
+  Process: 3953 ExecStartPre=/home/admin/config.scripts/blitz.systemd.sh log lightning STARTED (code=exited, status=0/SUCCESS)
+  Process: 3957 ExecStart=/usr/local/bin/lnd --externalip=${publicIP}:${lndPort} (code=exited, status=1/FAILURE)
+ Main PID: 3957 (code=exited, status=1/FAILURE)
+    Tasks: 0 (limit: 4915)
+   Memory: 0B
+   CGroup: /system.slice/lnd.service
+
+*** LAST LND ERROR LOGS ***
+sudo journalctl -u lnd -b --no-pager -n12
+-- Logs begin at Thu 2019-02-14 10:11:59 GMT, end at Thu 2020-01-23 18:57:13 GMT. --
+Jan 23 18:54:43 btczh systemd[1]: Started LND Lightning Daemon.
+Jan 23 18:54:44 btczh lnd[2958]: loadConfig: either bitcoin.active or litecoin.active must be set to 1 (true)
+Jan 23 18:54:44 btczh systemd[1]: lnd.service: Main process exited, code=exited, status=1/FAILURE
+Jan 23 18:54:44 btczh systemd[1]: lnd.service: Failed with result 'exit-code'.
+Jan 23 18:55:44 btczh systemd[1]: lnd.service: Service RestartSec=1min expired, scheduling restart.
+Jan 23 18:55:44 btczh systemd[1]: lnd.service: Scheduled restart job, restart counter is at 1.
+Jan 23 18:55:44 btczh systemd[1]: Stopped LND Lightning Daemon.
+Jan 23 18:56:14 btczh systemd[1]: Starting LND Lightning Daemon...
+Jan 23 18:56:14 btczh systemd[1]: Started LND Lightning Daemon.
+Jan 23 18:56:14 btczh lnd[3957]: loadConfig: either bitcoin.active or litecoin.active must be set to 1 (true)
+Jan 23 18:56:14 btczh systemd[1]: lnd.service: Main process exited, code=exited, status=1/FAILURE
+Jan 23 18:56:14 btczh systemd[1]: lnd.service: Failed with result 'exit-code'.
+
+*** LAST 30 LND INFO LOGS ***
+sudo tail -n 30 /mnt/hdd/lnd/logs/bitcoin/mainnet/lnd.log
+tail: cannot open '/mnt/hdd/lnd/logs/bitcoin/mainnet/lnd.log' for reading: No such file or directory
+
+- RTL is OFF by config
+
+*** HARDWARE TEST RESULTS ***
+UndervoltageReports in Logs: 0
+raspberryPi=4
+powerFAIL=0
+powerWARN=0
+powerMIN='840200 microVolt'
+tempFAIL=0
+tempWARN=4
+tempMAX='7200 centiGrad'
+IMPORTANT: There are some hardware issues with your setup.
+'Run Hardwaretest' in main menu or: sudo /home/admin/05hardwareTest.sh
+
+*** SYSTEM STATUS (can take some seconds to gather) ***
+localIP='192.168.1.1'
+tempCelsius='54.0'
+uptime=273
+upsStatus='OFF'
+startcountBlockchain=5
+bitcoinActive=0
+bitcoinErrorShort='Error found in Logs'
+bitcoinErrorFull='0'
+# OK: log 'ERROR: Error found in Logs' written to /home/admin/systemd.blockchain.log
+startcountLightning=2
+lndActive=0
+scriptRuntime=1
